@@ -21,5 +21,5 @@ _________   __  .__    ________
 *** Tested FT versions 2024.5 - 2026.1
 
 
-For more stuff checkout Alex Kropto King Discord
+For more stuff checkout Alex Crypto King Discord
 https://discord.com/channels/1238181199206154373/1284586552760074323
