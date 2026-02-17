@@ -14,6 +14,6 @@ _________   __  .__    ________
 
 *** 2. Fix for slow interface advise_exit                                
 
-*** 3. Enrich ROI (needs manual editing for different versions)
+*** 3. Enrich ROI (needs manual editing for older versions)
 
 *** Tested FT versions 2024.5 - 2026.1
