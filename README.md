@@ -15,5 +15,11 @@ _________   __  .__    ________
 *** 2. Fix for slow interface advise_exit                                
 
 *** 3. Enrich ROI (needs manual editing for older versions)
+<img width="1091" height="296" alt="image" src="https://github.com/user-attachments/assets/03f4b68b-0cee-495b-b946-5aec37b6ad6b" />
+
 
 *** Tested FT versions 2024.5 - 2026.1
+
+
+For more stuff checkout Alex Kropto King Discord
+https://discord.com/channels/1238181199206154373/1284586552760074323
