@@ -10,6 +10,7 @@ _________   __  .__    ________
 </pre>
 </p>
 
+v1.4
 *** 1. Fix for Freqtrade/FreqAI - download data also for opened positions
 
 *** 2. Fix for slow interface advise_exit                                
@@ -17,8 +18,10 @@ _________   __  .__    ________
 *** 3. Enrich ROI (needs manual editing for older versions)
 <img width="1091" height="296" alt="image" src="https://github.com/user-attachments/assets/03f4b68b-0cee-495b-b946-5aec37b6ad6b" />
 
+v1.5
+*** 4. Do not preserve hyperopted epochs trials with 0 trades as consumes the max number of epochs
 
-*** Tested FT versions 2024.5 - 2026.1
+*** Tested FT versions 2024.5 - 2026.2
 
 
 For more stuff checkout Alex Crypto King Discord
