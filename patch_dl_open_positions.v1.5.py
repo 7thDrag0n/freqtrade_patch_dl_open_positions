@@ -174,13 +174,20 @@ file_modifications = [
         total_trades = epoch.get("results_metrics", {}).get("total_trades", 0)
         if total_trades == 0:
             logger.debug(
-                f"Skipping epoch {epoch.get('current_epoch', 'unknown')} with 0 trades - not saved to file."
+                f"Skipping epoch {epoch.get('current_epoch', 'unknown')} (run epoch) "
+                f"with 0 trades - not saved to file."
             )
             return
+        
+        # Renumber epoch to be consecutive in the saved file
+        # This ensures hyperopt-show and other commands work correctly
+        saved_epoch_number = self.num_epochs_saved + 1
+        original_epoch = epoch["current_epoch"]
+        epoch["current_epoch"] = saved_epoch_number
         #7thDragon##########""",
         "import_statement": "",  # No import needed, logger already available in this file
         "comment_lines": [],  # No lines to comment
-        "applicable": "2024.5- | Skip writing hyperopt epochs with 0 trades"
+        "applicable": "2024.5- | Skip writing hyperopt epochs with 0 trades + renumber consecutively"
     }
 ]
 
@@ -283,7 +290,7 @@ print(r"                                                                v1.5    
 print(r"*** 1. Fix for Freqtrade/FreqAI - download data also for opened positions")
 print(r"*** 2. Fix for slow interface advise_exit                                ")
 print(r"*** 3. Enrich ROI (needs manual editing for different versions)          ")
-print(r"*** 4. Skip writing hyperopt epochs with 0 trades                        ")
+print(r"*** 4. Skip writing hyperopt epochs with 0 trades (renumbered)           ")
 print(r"*** Tested FT versions 2024.5 - 2025.5                                   ")
 
 # Run modifications for each specified file
