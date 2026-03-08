@@ -25,4 +25,5 @@ v1.5
 
 
 For more stuff checkout Alex Crypto King Discord
+https://discord.gg/UeshjrAs
 https://discord.com/channels/1238181199206154373/1284586552760074323
