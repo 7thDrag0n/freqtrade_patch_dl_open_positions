@@ -53,11 +53,11 @@ empty page, so it performs only as many requests as actually needed.
 Usage
 -----
     python patch_ccxt_fetchmarkets.py              # prompts, defaults to 500 after 10s
-    python patch_ccxt_fetchmarkets.py 500          # non-interactive
+    python patch_ccxt_fetchmarkets.py 500          # non-interactive (original defaults were previously 20 or 200)
     python patch_ccxt_fetchmarkets.py --restore    # roll back from .bak files
-    python patch_ccxt_fetchmarkets.py --dry-run
+    python patch_ccxt_fetchmarkets.py --dry-run    # test the patch
 
-Idempotent and re-runnable. Must be run inside the same environment freqtrade uses.
+Idempotent and re-runnable. Must be run inside the same environment freqtrade uses as it patch ccxt library, so of course need to run it every time you update it.
 
 ######################################################################################################
 For more stuff checkout Alex Crypto King Discord
