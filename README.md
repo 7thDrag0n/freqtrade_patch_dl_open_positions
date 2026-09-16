@@ -23,7 +23,41 @@ v1.5
 
 *** Tested FT versions 2024.5 - 2026.2
 
+######################################################################################################
 
+# freqtrade_patch_ccxt_fetchmarkets
+
+Patch ccxt's bybit.fetch_leverage_tiers() pagination cap.
+
+Background
+----------
+Bybit's /v5/market/risk-limit endpoint is cursor-paginated. ccxt calls it via:
+
+    data = self.get_leverage_tiers_paginated(
+        symbol, self.extend({'paginate': True, 'paginationCalls': 50}, params))
+
+'paginationCalls' is hardcoded and acts as a hard stop in fetch_paginated_call_cursor
+(`while i < maxCalls`). Once Bybit lists more linear symbols than that budget covers,
+the tail of the symbol list is silently dropped -- no error, no warning. Freqtrade then
+caches the truncated result for 24h in
+    <datadir>/futures/leverage_tiers_<STAKE>.json
+which yields max_leverage == 1.0 and
+    InvalidOrderException: Maintenance margin rate for XRP/USDT:USDT is unavailable
+for the missing pairs.
+
+Raising the cap costs nothing: the loop still exits early on an exhausted cursor or an
+empty page, so it performs only as many requests as actually needed.
+
+Usage
+-----
+    python patch_ccxt_fetchmarkets.py              # prompts, defaults to 500 after 10s
+    python patch_ccxt_fetchmarkets.py 500          # non-interactive
+    python patch_ccxt_fetchmarkets.py --restore    # roll back from .bak files
+    python patch_ccxt_fetchmarkets.py --dry-run
+
+Idempotent and re-runnable. Must be run inside the same environment freqtrade uses.
+
+######################################################################################################
 For more stuff checkout Alex Crypto King Discord
 https://discord.gg/UeshjrAs
 https://discord.com/channels/1238181199206154373/1284586552760074323
