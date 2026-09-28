@@ -25,7 +25,7 @@ v1.5
 
 *** Tested FT versions 2024.5 - 2026.8
 
-######################################################################################################
+#############################################################################################
 
 # freqtrade_patch_ccxt_fetchmarkets
 
@@ -59,7 +59,64 @@ Usage
 
 Idempotent and re-runnable. Must be run inside the same environment freqtrade uses as it patch ccxt library, so of course need to run it every time you update it.
 
-######################################################################################################
+# patch_freqtrade_log_tz.py
+
+Patch freqtrade's RPC log endpoint to report log timestamps in local time
+instead of UTC.
+ 
+Background
+----------
+`RPC._rpc_get_logs()` (freqtrade/rpc/rpc.py) is what feeds FreqUI's Logs tab
+and the `/api/v1/logs` endpoint. It builds each row as:
+ 
+    format_date(dt_from_ts(r.created))
+ 
+`dt_from_ts()` (freqtrade/util/datetime_helpers.py) is hardcoded to
+    datetime.fromtimestamp(timestamp, tz=UTC)
+so the UI's log timestamps are always UTC, no matter what `TZ` the
+container/host is set to.
+ 
+This is a regression introduced in commit ec5dede4 ("chore: use timezone
+aware datetime objects", 2026-08-03). Before that commit the line read:
+ 
+    format_date(datetime.fromtimestamp(r.created))
+ 
+which used the local timezone -- and matches what the plain-text file/console
+logger still does today (it was not touched by that commit, so file logs and
+the UI now disagree). This script reverts just that one call site back to
+local time.
+ 
+It does NOT touch the other two `dt_from_ts()` call sites in rpc.py (trade
+open-timestamp humanizing, backtest start_date default) -- those are
+legitimately timezone-aware and out of scope.
+ 
+Why this approach survives upstream changes
+--------------------------------------------
+The anchor is `dt_from_ts(r.created)` -- the combination of that helper name
+and the logging record's `.created` attribute is unlikely to be renamed
+(`r.created` is a stable Python `logging.LogRecord` attribute, and this is
+the only place in rpc.py that calls `dt_from_ts` on it). The regex tolerates
+reformatting (whitespace, line breaks, `record` instead of `r`, `await`,
+etc.) around that call, the same way the ccxt pagination patch tolerates
+reformatting around `paginationCalls`.
+ 
+If upstream ever removes the plain `datetime` class from rpc.py's imports
+(unlikely -- it's used throughout the file already), this script adds it
+back automatically.
+ 
+Usage
+-----
+    python patch_freqtrade_log_tz.py              # patch
+    python patch_freqtrade_log_tz.py --restore     # roll back from .bak
+    python patch_freqtrade_log_tz.py --dry-run     # report only
+ 
+Idempotent and re-runnable. Must be run inside the same environment/container
+freqtrade runs in (so `import freqtrade` resolves to the live install), and
+freqtrade must be restarted afterwards for the change to take effect.
+
+
+#############################################################################################
+#############################################################################################
 For more stuff checkout Alex Crypto King Discord
 https://discord.gg/UeshjrAs
 https://discord.com/channels/1238181199206154373/1284586552760074323
