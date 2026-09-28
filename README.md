@@ -59,6 +59,8 @@ Usage
 
 Idempotent and re-runnable. Must be run inside the same environment freqtrade uses as it patch ccxt library, so of course need to run it every time you update it.
 
+#############################################################################################
+
 # patch_freqtrade_log_tz.py
 
 Patch freqtrade's RPC log endpoint to report log timestamps in local time
